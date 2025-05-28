@@ -5,14 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Mesmerizing Program Viewer</title>
 
-<!-- Google Fonts -->
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
 
-<!-- Prism.js CSS for syntax highlighting -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-twilight.css" rel="stylesheet" /> -->
+
 
 <style>
-  /* Reset */
+  
   * {
     box-sizing: border-box;
   }
@@ -24,19 +23,19 @@
     color: #ffe6f0;
   }
 
-  /* Canvas background (particles) */
+
   canvas {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    z-index: 0; /* particles behind everything else */
+    z-index: 0; 
     pointer-events: none;
   }
 
-  /* Main content container */
+
   #app {
     position: relative;
-    z-index: 10; /* ensure above the canvas */
+    z-index: 10; 
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -89,7 +88,7 @@
     color: #fff;
   }
 
-  /* Modal overlay and expanded container */
+
   #overlay {
     position: fixed;
     top: 0; left: 0;
@@ -183,7 +182,7 @@
     pre { font-size: 1.1rem; max-height: 350px; padding: 1rem; }
   }
 
-  /* Example Custom Theme */
+
 .token.comment { color: #999; font-style: italic; }
 .token.keyword { color: #ff007c; font-weight: bold; }
 .token.string { color: #00ffa2; }
@@ -199,10 +198,10 @@ pre, code {
 </head>
 <body>
 
-<!-- Particles canvas -->
+
 <canvas id="backgroundCanvas"></canvas>
 
-<!-- Main Application -->
+
 <main id="app">
     <header>
       <h1>✨ Mesmerizing Program Viewer ✨</h1>
@@ -225,7 +224,7 @@ pre, code {
   </main>
   
 
-<!-- Modal overlay and code block -->
+
 <div id="overlay"></div>
 
 <div id="expanded" role="dialog" aria-modal="true" aria-labelledby="codeTitle" tabindex="-1">
@@ -234,15 +233,15 @@ pre, code {
   <pre><code id="codeBlock" class="language-javascript" tabindex="0"></code></pre>
 </div>
 
-<!-- Three.js & JS logic -->
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 
-<!-- Prism.js for syntax highlighting -->
+
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
 
 <script>
-  // Codes for each program
+
   const codes = {
     1: `-- 1 start
 CREATE DATABASE IF NOT EXISTS temp1;
@@ -456,12 +455,12 @@ GROUP BY AGE;
   const copyBtn = document.getElementById('copyBtn');
   const closeBtn = document.getElementById('closeBtn');
 
-  // Show code in modal with Prism syntax highlighting
+
   programs.forEach(program => {
     program.addEventListener('click', () => {
       const id = program.dataset.id;
       codeBlock.textContent = codes[id] || '// Code not found';
-      Prism.highlightElement(codeBlock); // Re-highlight new content
+      Prism.highlightElement(codeBlock); 
       expanded.classList.add('active');
       overlay.classList.add('active');
       expanded.focus();
@@ -480,7 +479,7 @@ GROUP BY AGE;
     if (e.key === 'Escape' && expanded.classList.contains('active')) closeModal();
   });
 
-  // Copy code to clipboard
+
   copyBtn.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(codeBlock.textContent);
@@ -495,7 +494,7 @@ GROUP BY AGE;
     }
   });
 
-  // Three.js particles
+
   const canvas = document.getElementById('backgroundCanvas');
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -548,10 +547,10 @@ GROUP BY AGE;
     camera.updateProjectionMatrix();
   });
 
-  // Disable right-click
+
 document.addEventListener("contextmenu", e => e.preventDefault());
 
-// Disable F12, Ctrl+Shift+I/J/C, Ctrl+U
+
 document.onkeydown = function (e) {
   if (
     e.key === "F12" ||
@@ -562,7 +561,7 @@ document.onkeydown = function (e) {
   }
 };
 
-// Detect and close if DevTools is open (basic check using console timing)
+	
 (function detectDevTools() {
   const threshold = 160;
   setInterval(function () {
