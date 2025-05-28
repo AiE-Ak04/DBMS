@@ -205,7 +205,7 @@ pre, code {
 <!-- Main Application -->
 <main id="app">
     <header>
-      <h1>💫 Apki Seva m ✨</h1>
+      <h1>✨ Mesmerizing Program Viewer ✨</h1>
     </header>
   
     <section class="programs">
@@ -393,57 +393,7 @@ WHERE EMPNO = 105;
 -- 12 start
 SELECT * FROM Employee;
 -- 12 end`,
-    3: `-- 1 start
-CREATE DATABASE IF NOT EXISTS temp3;
-USE temp3;
--- 1 end
-
--- 2 start
-CREATE TABLE _Employee_ (
-    E_id INT PRIMARY KEY,
-    E_name VARCHAR(100),
-    Age INT,
-    Salary DECIMAL(10, 2)
-);
--- 2 end
-
--- 3 start
-INSERT INTO Employee VALUES (1, 'Braham Kumar', 30, 50000);
-INSERT INTO Employee VALUES (2, 'Shubham Kumar', 25, 60000);
-INSERT INTO Employee VALUES (3, 'Anjali Kumari', 35, 55000);
-INSERT INTO Employee VALUES (4, 'Aman Kumar', 28, 62000);
-INSERT INTO Employee VALUES (5, 'Shoaib Akhtar', 40, 70000);
--- 3 end
-
-
--- 4 start
-SELECT COUNT(E_NAME) AS "NUMBER OF EMPLOYEES" 
-	FROM EMPLOYEE;
--- 4 end
-
--- 5 start
-SELECT MAX(AGE) AS "MAXIMUM AGE" 
-FROM EMPLOYEE;
--- 5 end
-
--- 6 start
-SELECT MIN(AGE) AS "MINIMUM AGE"
-FROM EMPLOYEE;
--- 6 end
-
--- 7 start
-SELECT E_NAME, SALARY 
-FROM EMPLOYEE 
-ORDER BY SALARY ASC;
--- 7 end
-
--- 8 start
-SELECT Age, SUM(SALARY) AS "TOTAL SALARY"
-FROM EMPLOYEE
-GROUP BY AGE;
--- end
-
-`,
+    3: `P_03`,
     4: `P_04`,
     5: `P_05`,
     6: `P_06`
@@ -548,7 +498,7 @@ GROUP BY AGE;
     camera.updateProjectionMatrix();
   });
 
-	  // Disable right-click
+  // Disable right-click
 document.addEventListener("contextmenu", e => e.preventDefault());
 
 // Disable F12, Ctrl+Shift+I/J/C, Ctrl+U
@@ -574,6 +524,7 @@ document.onkeydown = function (e) {
     }
   }, 1000);
 })();
+
 
 </script>
 </body>
