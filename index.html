@@ -616,7 +616,75 @@ DELIMITER ;
 -- 5 start
 CALL ReadEmployees();
 -- 5 end`,
-    6: `P_06`
+    6: `-- 1 start
+CREATE DATABASE IF NOT EXISTS temp6;
+USE temp6;
+-- 1 end
+
+-- 2 start
+CREATE TABLE N_RollCall (
+    id INT,
+    name VARCHAR(100),
+    roll_date DATE
+);
+-- 2 end
+
+-- 3 start
+INSERT INTO N_RollCall VALUES 
+(1, 'Braham Kumar', '2015-01-22'),
+(2, 'Shubham Kumar', '2016-04-22'),
+(3, 'Bikash Singh', '2017-05-22');
+-- 3 end
+
+-- 4 start
+CREATE TABLE O_RollCall (
+    id INT,
+    name VARCHAR(100),
+    roll_date DATE
+);
+-- 4 end
+
+
+-- 5 start
+INSERT INTO O_RollCall VALUES 
+(4, 'Amit Singh', '2015-01-22'),
+(5, 'Mukesh Kumar', '2016-04-22'),
+(6, 'Abhay Singh', '2017-05-22');
+-- 5 end
+
+-- 6 start
+DELIMITER $$
+
+CREATE PROCEDURE Merge_RollCall_Data()
+BEGIN
+    INSERT INTO O_RollCall (id, name, roll_date)
+    SELECT n.id, n.name, n.roll_date
+    FROM N_RollCall n
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM O_RollCall o
+        WHERE o.id = n.id
+          AND o.name = n.name
+          AND o.roll_date = n.roll_date
+    );
+    
+    SELECT 'Data merged successfully from N_RollCall to O_RollCall.' AS message;
+END$$
+
+DELIMITER ;
+-- 6 end
+
+-- 7 start
+CALL Merge_RollCall_Data();
+-- 7 end
+
+-- 8 start
+SELECT * FROM N_Rollcall;
+-- 8 end
+
+-- 9 start
+SELECT * FROM O_Rollcall;
+-- 9 end`
   };
 
   const programs = document.querySelectorAll('.program');
