@@ -548,6 +548,33 @@ GROUP BY AGE;
     camera.updateProjectionMatrix();
   });
 
+	  // Disable right-click
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Disable F12, Ctrl+Shift+I/J/C, Ctrl+U
+document.onkeydown = function (e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key)) ||
+    (e.ctrlKey && e.key === "U")
+  ) {
+    return false;
+  }
+};
+
+// Detect and close if DevTools is open (basic check using console timing)
+(function detectDevTools() {
+  const threshold = 160;
+  setInterval(function () {
+    const start = performance.now();
+    debugger;
+    const end = performance.now();
+    if (end - start > threshold) {
+      document.body.innerHTML = "<h1 style='color:#ff79c6;text-align:center;padding:3rem;'>DevTools is not allowed on this site.</h1>";
+    }
+  }, 1000);
+})();
+
 </script>
 </body>
 </html>
