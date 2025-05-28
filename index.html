@@ -547,7 +547,75 @@ SELECT * FROM CUSTOMERS_LOG;
 
 
 `,
-    5: `P_05`,
+    5: `-- 1 start
+CREATE DATABASE IF NOT EXISTS temp5;
+USE temp5;
+-- 1 end
+
+-- 2 start
+CREATE TABLE Employee (
+    E_id int PRIMARY KEY,
+    E_name VARCHAR(100), 
+    Age int,
+    Salary int
+);
+-- 2 end
+
+-- 3 start
+INSERT INTO EMPLOYEE VALUES (1, 'Braham Kumar', 30, 50000);
+INSERT INTO EMPLOYEE VALUES (2, 'Shubham', 32, 55000);
+INSERT INTO EMPLOYEE VALUES (3, 'Bikash', 28, 48000);
+-- 3 end
+
+
+-- 4 start
+DELIMITER //
+
+
+CREATE PROCEDURE ReadEmployees()
+BEGIN
+    DECLARE v_E_id INT;
+    DECLARE v_E_name VARCHAR(100);
+    DECLARE v_Age INT;
+    DECLARE v_Salary INT;
+    
+    DECLARE done INT DEFAULT 0;
+    
+    DECLARE emp_cursor CURSOR FOR
+        SELECT E_id, E_name, Age, Salary FROM Employee;
+
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    
+    OPEN emp_cursor;
+
+    
+    read_loop: LOOP
+        FETCH emp_cursor INTO v_E_id, v_E_name, v_Age, v_Salary;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        
+        SELECT 
+            v_E_id AS E_id, 
+            v_E_name AS E_name, 
+            v_Age AS Age, 
+            v_Salary AS Salary;
+    END LOOP;
+
+    
+    CLOSE emp_cursor;
+END;
+//
+
+
+DELIMITER ;
+-- 4 end
+
+-- 5 start
+CALL ReadEmployees();
+-- 5 end`,
     6: `P_06`
   };
 
