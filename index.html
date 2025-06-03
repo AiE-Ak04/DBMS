@@ -62,8 +62,10 @@
 <div id="program6" class="container">Program 6</div>
 <div id="program7" class="container">Program 7</div>
 <div id="program8" class="container">Program 8</div>
+<div id="program9" class="container">Program 9</div>
 <div id="program10" class="container">Program 10</div>
 <div id="program11" class="container">Program 11</div>
+<div id="program12" class="container">Program 12</div>
 <div id="program-box" class="expanded">
   <button id="copy-btn" class="copy-btn">Copy & Download</button>
   <pre id="code" class="code"></pre>
@@ -480,99 +482,180 @@ int main()
         sumofsub(0,1,sum);
     return 0;
 }`,
-program10: `#include <stdio.h>
+program9: `
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-// Function to swap two elements
-void swap(int* a, int* b)
+// Function to perform selection sort on an array
+void selectionSort(int arr[], int n)
 {
-    int t = *a;
-    *a = *b;
-    *b = t;
-}
-
-// Partition function for Quick Sort
-int partition(int arr[], int low, int high)
-{
-    int pivot = arr[high]; // Pivot element
-    int i = (low - 1); // Index of smaller element
-
-    for (int j = low; j <= high - 1; j++)
+    int i, j, min_idx;
+    for (i = 0; i < n-1; i++)
     {
-        if (arr[j] < pivot)
+        min_idx = i;  // Assume the current element is the minimum
+        for (j = i+1; j < n; j++)
         {
-            i++; // Increment index of smaller element
-            swap(&arr[i], &arr[j]);
+            if (arr[j] < arr[min_idx])
+            {
+                min_idx = j;  // Update min_idx if a smaller element is found
+            }
         }
-    }
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
-}
-
-// Quick Sort function
-void quickSort(int arr[], int low, int high)
-{
-    if (low < high)
-    {
-        int pi = partition(arr, low, high);
-
-        // Recursively sort elements before and after partition
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        // Swap the found minimum element with the current element
+        int temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
     }
 }
 
-// Function to generate random numbers
-void generateRandomNumbers(int arr[], int n)
+// Function to generate random integers
+void generateRandomArray(int arr[], int n)
 {
     for (int i = 0; i < n; i++)
-    {
-        arr[i] = rand() % 100000; // Generate random numbers between 0 and 99999
-    }
+        arr[i] = rand() % 100000; // Generate random integers between 0 and 99999
 }
+
 
 int main()
 {
-    int n;
-    printf("Enter number of elements: ");
-    scanf("%d", &n); // Read the number of elements from the user
-
-    if (n <= 5000)
-    {
-        printf("Please enter a value greater than 5000\n");
-        return 1; // Exit if the number of elements is not greater than 5000
+    FILE *fp = fopen("selection_sort.dat", "w");
+    if (!fp) {
+        printf("Failed to open file for writing\n");
+        return 1;
     }
 
-    // Allocate memory for the array
-    int *arr = (int *)malloc(n * sizeof(int));
-    if (arr == NULL)
+    int min_n = 6000, max_n = 50000, step = 4000;
+    for (int n = min_n; n <= max_n; n += step)
     {
-        printf("Memory allocation failed\n");
-        return 1; // Exit if memory allocation fails
+        int *arr = (int *)malloc(n * sizeof(int));
+        if (!arr) {
+            printf("Memory allocation failed for n=%d\n", n);
+            continue;
+        }
+        generateRandomArray(arr, n);
+
+        clock_t start = clock();
+        for (int i = 0; i < 10; i++) // Fewer iterations for larger n
+            selectionSort(arr, n);
+        clock_t end = clock();
+
+        double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC / 10.0;
+        printf("n=%d, time=%f\n", n, time_taken);
+        fprintf(fp, "%d %f\n", n, time_taken);
+
+        free(arr);
     }
-
-    // Generate random numbers and store them in the array
-    generateRandomNumbers(arr, n);
-
-    // Measure the time taken to sort the array
-    clock_t start = clock();
-    quickSort(arr, 0, n - 1);
-    clock_t end = clock();
-
-    // Calculate and print the time taken to sort the array
-    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("Time taken to sort %d elements: %f seconds\n", n, time_taken);
-
-    // Free the allocated memory
-    free(arr);
+    fclose(fp);
     return 0;
-}`,
+}
+
+/* s.gpl */
+/*
+set terminal png
+set output 'selection_sort.png'
+set title "selection Sort: Number of Elements vs Time Taken"
+set xlabel "Number of Elements"
+set ylabel "Time Taken (seconds)"
+set grid
+plot "selection_sort.dat" using 1:2 with linespoints title "Merge Sort"
+pause -1 "Press Enter to exit"
+*/
+`,
+
+program10: `#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+// Function to swap two elements
+void swap(int* a, int* b)
+{
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+// Partition function for Quick Sort
+int partition(int arr[], int low, int high)
+{
+	int pivot = arr[high]; // Pivot element
+	int i = (low - 1); // Index of smaller element
+	for (int j = low; j <= high - 1; j++)
+	{
+		if (arr[j] < pivot)
+		{
+			i++; // Increment index of smaller element
+			swap(&arr[i], &arr[j]);
+		}
+	}
+	swap(&arr[i + 1], &arr[high]);
+	return (i + 1);
+}
+// Quick Sort function
+void quickSort(int arr[], int low, int high)
+{
+	if (low < high)
+	{
+		int pi = partition(arr, low, high);// Recursively sort elements before and after partition
+		quickSort(arr, low, pi - 1);
+		quickSort(arr, pi + 1, high);
+	}
+}
+// Function to generate random integers
+void generateRandomArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+        arr[i] = rand() % 100000; // Generate random integers between 0 and 99999
+}
+
+
+int main()
+{
+    FILE *fp = fopen("quick_sort.dat", "w");
+    if (!fp) {
+        printf("Failed to open file for writing\n");
+        return 1;
+    }
+
+    int min_n = 6000, max_n = 50000, step = 4000;
+    for (int n = min_n; n <= max_n; n += step)
+    {
+        int *arr = (int *)malloc(n * sizeof(int));
+        if (!arr) {
+            printf("Memory allocation failed for n=%d\n", n);
+            continue;
+        }
+        generateRandomArray(arr, n);
+
+        clock_t start = clock();
+        for (int i = 0; i < 10; i++) // Fewer iterations for larger n
+            quickSort(arr, 0, n - 1);
+        clock_t end = clock();
+
+        double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC / 10.0;
+        printf("n=%d, time=%f\n", n, time_taken);
+        fprintf(fp, "%d %f\n", n, time_taken);
+
+        free(arr);
+    }
+    fclose(fp);
+    return 0;
+}
+
+/* q.gpl */
+/*
+set terminal png
+set output 'quick_sort.png'
+set title "Quick Sort: Number of Elements vs Time Taken"
+set xlabel "Number of Elements"
+set ylabel "Time Taken (seconds)"
+set grid
+plot "quick_sort.dat" using 1:2 with linespoints title "Merge Sort"
+pause -1 "Press Enter to exit"
+*/`,
+    
 program11:`#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-// Function to merge two sorted arrays
+// ... [merge, mergeSort, generateRandomArray as before] ...
 void merge(int arr[], int left, int mid, int right)
 {
     int i, j, k;
@@ -647,41 +730,48 @@ void generateRandomArray(int arr[], int n)
 
 int main()
 {
-    int n;
-    printf("Enter the number of elements: ");
-    scanf("%d", &n);
-
-    if (n <= 5000)
-    {
-        printf("Please enter a value greater than 5000\n");
-        return 1; // Exit if the number of elements is not greater than 5000
+    FILE *fp = fopen("merge_sort.dat", "w");
+    if (!fp) {
+        printf("Failed to open file for writing\n");
+        return 1;
     }
 
-    int *arr = (int *)malloc(n * sizeof(int));
-    if (arr == NULL)
+    int min_n = 6000, max_n = 50000, step = 4000;
+    for (int n = min_n; n <= max_n; n += step)
     {
-        printf("Memory allocation failed\n");
-        return 1; // Exit if memory allocation fails
+        int *arr = (int *)malloc(n * sizeof(int));
+        if (!arr) {
+            printf("Memory allocation failed for n=%d\n", n);
+            continue;
+        }
+        generateRandomArray(arr, n);
+
+        clock_t start = clock();
+        for (int i = 0; i < 10; i++) // Fewer iterations for larger n
+            mergeSort(arr, 0, n - 1);
+        clock_t end = clock();
+
+        double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC / 10.0;
+        printf("n=%d, time=%f\n", n, time_taken);
+        fprintf(fp, "%d %f\n", n, time_taken);
+
+        free(arr);
     }
-
-    generateRandomArray(arr, n);
-
-    // Repeat the sorting process multiple times to increase duration for timing
-    clock_t start = clock();
-    for (int i = 0; i < 1000; i++)
-    {
-        mergeSort(arr, 0, n - 1);
-    }
-    clock_t end = clock();
-
-    // Calculate the time taken for one iteration
-    double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC / 1000.0;
-
-    printf("Time taken to sort %d elements: %f seconds\n", n, time_taken);
-
-    free(arr);
+    fclose(fp);
     return 0;
-}`
+}
+
+/* m.gpl */
+/*
+set terminal png
+set output 'merge_sort.png'
+set title "Merge Sort: Number of Elements vs Time Taken"
+set xlabel "Number of Elements"
+set ylabel "Time Taken (seconds)"
+set grid
+plot "merge_sort.dat" using 1:2 with linespoints title "Merge Sort"
+pause -1 "Press Enter to exit"
+*/`
   };
 
   const box = document.getElementById('program-box');
